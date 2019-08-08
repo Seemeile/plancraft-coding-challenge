@@ -3,13 +3,21 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@atlaskit/icon": "^19.0.1",
+    "@atlaskit/navigation": "^35.1.13",
+    "@atlaskit/tree": "^6.0.5",
+    "@types/atlaskit__tree": "^4.1.1",
     "@types/jest": "24.0.17",
     "@types/node": "12.7.0",
     "@types/react": "16.8.24",
     "@types/react-dom": "16.8.5",
+    "@types/styled-components": "^4.1.18",
+    "bootstrap": "^4.3.1",
     "react": "^16.8.6",
+    "react-bootstrap": "^1.0.0-beta.10",
     "react-dom": "^16.8.6",
     "react-scripts": "3.0.1",
+    "styled-components": "^4.3.2",
     "typescript": "3.5.3"
   },
   "scripts": {
