@@ -2,10 +2,6 @@
 import React from 'react';
 import './SpaceShipSelector.css';
 import styled from 'styled-components';
-import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
-import ChevronRightIcon from '@atlaskit/icon/glyph/chevron-right';
-import Button from '@atlaskit/button';
-import Navigation, { AkNavigationItem } from '@atlaskit/navigation';
 import Tree, {
   mutateTree,
   moveItemOnTree,
@@ -17,17 +13,11 @@ import Tree, {
   TreeDestinationPosition,
 } from '@atlaskit/tree';
 
-const Container = styled.div`
-  display: flex;
-`;
-
-const Dot = styled.span`
-  display: flex;
-  width: 24px;
-  height: 32px;
+const PreTextIcon = styled.span`
+  display: inline-block;
+  width: 16px;
   justify-content: center;
-  font-size: 12px;
-  line-height: 32px;
+  cursor: pointer;
 `;
 
 const SpaceShipSelector: React.FC = () => {
@@ -107,28 +97,20 @@ const SpaceShipSelector: React.FC = () => {
     },
   };
 
-  const getIcon = (item: TreeItem, onExpand: (itemId: ItemId) => void, onCollapse: (itemId: ItemId) => void) => {
+  const getIcon = (
+    item: TreeItem,
+    onExpand: (itemId: ItemId) => void,
+    onCollapse: (itemId: ItemId) => void,
+  ) => {
     if (item.children && item.children.length > 0) {
       return item.isExpanded ? (
-        <Button
-          spacing="none"
-          appearance="subtle-link"
-          onClick={() => onCollapse(item.id)}
-        >
-          <ChevronDownIcon label="" size="medium" />
-        </Button>
+        <PreTextIcon onClick={() => onCollapse(item.id)}>-</PreTextIcon>
       ) : (
-        <Button
-          spacing="none"
-          appearance="subtle-link"
-          onClick={() => onExpand(item.id)}
-        >
-          <ChevronRightIcon label="" size="medium" />
-        </Button>
+        <PreTextIcon onClick={() => onExpand(item.id)}>+</PreTextIcon>
       );
     }
-    return <Dot>&bull;</Dot>;
-  }
+    return <PreTextIcon>&bull;</PreTextIcon>;
+  };
 
   const onExpand = (itemId: ItemId) => {
     
@@ -139,36 +121,32 @@ const SpaceShipSelector: React.FC = () => {
   };
 
   const onDragEnd = (source: TreeSourcePosition | undefined, destination: TreeDestinationPosition | undefined) => {
-
+    
   };
 
   const renderItem = ({item, onExpand, onCollapse, provided, snapshot}: RenderItemParams) => {
     return (
-      <div ref={provided.innerRef} {...provided.draggableProps}>
-        <AkNavigationItem
-          isDragging={snapshot.isDragging}
-          text={item.data ? item.data.title : ''}
-          icon={getIcon(item, onExpand, onCollapse)}
-          dnd={{ dragHandleProps: provided.dragHandleProps }}
-        />
+      <div
+        ref={provided.innerRef}
+        {...provided.draggableProps}
+        {...provided.dragHandleProps}
+      >
+        <span>{getIcon(item, onExpand, onCollapse)}</span>
+        <span>{item.data ? item.data.title : ''}</span>
       </div>
     );
   };
 
   return (
     <div className="SpaceShipSelector">
-      <Container>
-        <Navigation>
-          <Tree
-            tree={treeWithTwoBranches}
-            renderItem={renderItem}
-            onExpand={onExpand}
-            onCollapse={onCollapse}
-            onDragEnd={onDragEnd}
-            isDragEnabled
-          />
-        </Navigation>
-      </Container>
+      <Tree
+        tree={treeWithTwoBranches}
+        renderItem={renderItem}
+        onExpand={onExpand}
+        onCollapse={onCollapse}
+        onDragEnd={onDragEnd}
+        isDragEnabled
+      />
     </div>
   );
 }
