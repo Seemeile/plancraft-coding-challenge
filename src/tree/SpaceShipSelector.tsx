@@ -23,6 +23,7 @@ const PreTextIcon = styled.span`
 enum ActionType {
   Collapse = 'collapse',
   Expand = 'expand',
+  Drag = 'drag'
 }
 
 interface ReducerState {
@@ -32,16 +33,21 @@ interface ReducerState {
 interface ReducerAction {
   type: ActionType;
   payload: {
-    itemId: ItemId; 
+    itemId: ItemId;
+    src: TreeSourcePosition;
+    dst: TreeDestinationPosition;
   };
 }
 
 const reducer: React.Reducer<ReducerState, ReducerAction> = (state, action) => {
   switch (action.type) {
     case ActionType.Collapse:
+      console.log(action.payload);
       return {tree: mutateTree(state.tree, action.payload, { isExpanded: false })};
     case ActionType.Expand:
         return {tree: mutateTree(state.tree, action.payload, { isExpanded: true })};
+    case ActionType.Drag:
+        return {tree: moveItemOnTree(state.tree, action.payload.src, action.payload.dst)};
     default:
       throw new Error();
   }
@@ -50,11 +56,7 @@ const reducer: React.Reducer<ReducerState, ReducerAction> = (state, action) => {
 const SpaceShipSelector: React.FC = () => {
   const [state, dispatch] = React.useReducer(reducer, {tree: initSpaceShipModules});
 
-  const getIcon = (
-    item: TreeItem,
-    onExpand: (itemId: ItemId) => void,
-    onCollapse: (itemId: ItemId) => void,
-  ) => {
+  const getIcon = (item: TreeItem, onExpand: (itemId: ItemId) => void, onCollapse: (itemId: ItemId) => void) => {
     if (item.children && item.children.length > 0) {
       return item.isExpanded ? (
         <PreTextIcon onClick={() => onCollapse(item.id)}>-</PreTextIcon>
@@ -73,8 +75,12 @@ const SpaceShipSelector: React.FC = () => {
     dispatch({type: ActionType.Collapse, payload: itemId});
   };
 
-  const onDragEnd = (source: TreeSourcePosition | undefined, destination: TreeDestinationPosition | undefined) => {
-    
+  const onDragEnd = (source: TreeSourcePosition, destination: TreeDestinationPosition | undefined) => {
+    if (!destination) {
+      alert('no destination');
+    } else {
+      dispatch({type: ActionType.Drag, payload: {itemId: undefined, src: source, dst: destination}});
+    }
   };
 
   const renderItem = ({item, onExpand, onCollapse, provided, snapshot}: RenderItemParams) => {
@@ -98,7 +104,8 @@ const SpaceShipSelector: React.FC = () => {
         onExpand={onExpand}
         onCollapse={onCollapse}
         onDragEnd={onDragEnd}
-        isDragEnabled
+        isDragEnabled={true}
+        isNestingEnabled={true}
       />
     </div>
   );
