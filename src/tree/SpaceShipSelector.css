@@ -1,4 +1,6 @@
-.SpaceShipSelector {
-
+.SpaceShipSelector .PreTextIcon {
+  display: inline-block;
+  width: 20px;
+  justify-content: center;
+  cursor: pointer;
 }
-
