@@ -1,5 +1,4 @@
-///<reference path="./SpaceShipSelector.d.ts" />
-import React from 'react';
+import * as React from 'react';
 import './SpaceShipSelector.css';
 import styled from 'styled-components';
 import Tree, {
@@ -12,6 +11,7 @@ import Tree, {
   TreeSourcePosition,
   TreeDestinationPosition,
 } from '@atlaskit/tree';
+import {initSpaceShipModules} from './data/InitSpaceShipModules'; 
 
 const PreTextIcon = styled.span`
   display: inline-block;
@@ -20,82 +20,35 @@ const PreTextIcon = styled.span`
   cursor: pointer;
 `;
 
-const SpaceShipSelector: React.FC = () => {
-  const treeWithTwoBranches: TreeData = {
-    rootId: '1',
-    items: {
-      '1': {
-        id: '1',
-        children: ['1-1', '1-2'],
-        hasChildren: true,
-        isExpanded: true,
-        isChildrenLoading: false,
-        data: {
-          title: 'root',
-        },
-      },
-      '1-1': {
-        id: '1-1',
-        children: ['1-1-1', '1-1-2'],
-        hasChildren: true,
-        isExpanded: true,
-        isChildrenLoading: false,
-        data: {
-          title: 'First parent',
-        },
-      },
-      '1-2': {
-        id: '1-2',
-        children: ['1-2-1', '1-2-2'],
-        hasChildren: true,
-        isExpanded: true,
-        isChildrenLoading: false,
-        data: {
-          title: 'Second parent',
-        },
-      },
-      '1-1-1': {
-        id: '1-1-1',
-        children: [],
-        hasChildren: false,
-        isExpanded: false,
-        isChildrenLoading: false,
-        data: {
-          title: 'Child one',
-        },
-      },
-      '1-1-2': {
-        id: '1-1-2',
-        children: [],
-        hasChildren: false,
-        isExpanded: false,
-        isChildrenLoading: false,
-        data: {
-          title: 'Child two',
-        },
-      },
-      '1-2-1': {
-        id: '1-2-1',
-        children: [],
-        hasChildren: false,
-        isExpanded: false,
-        isChildrenLoading: false,
-        data: {
-          title: 'Child three',
-        },
-      },
-      '1-2-2': {
-        id: '1-2-2',
-        children: [],
-        hasChildren: false,
-        isExpanded: false,
-        isChildrenLoading: false,
-        data: {
-          title: 'Child four',
-        },
-      },
-    },
+enum ActionType {
+  Collapse = 'collapse',
+  Expand = 'expand',
+}
+
+interface ReducerState {
+  tree: TreeData;
+}
+
+interface ReducerAction {
+  type: ActionType;
+  payload: {
+    itemId: ItemId; 
   };
+}
+
+const reducer: React.Reducer<ReducerState, ReducerAction> = (state, action) => {
+  switch (action.type) {
+    case ActionType.Collapse:
+      return {tree: mutateTree(state.tree, action.payload, { isExpanded: false })};
+    case ActionType.Expand:
+        return {tree: mutateTree(state.tree, action.payload, { isExpanded: true })};
+    default:
+      throw new Error();
+  }
+}
+
+const SpaceShipSelector: React.FC = () => {
+  const [state, dispatch] = React.useReducer(reducer, {tree: initSpaceShipModules});
 
   const getIcon = (
     item: TreeItem,
@@ -113,11 +66,11 @@ const SpaceShipSelector: React.FC = () => {
   };
 
   const onExpand = (itemId: ItemId) => {
-    
+    dispatch({type: ActionType.Expand, payload: itemId});
   };
 
   const onCollapse = (itemId: ItemId) => {
-    
+    dispatch({type: ActionType.Collapse, payload: itemId});
   };
 
   const onDragEnd = (source: TreeSourcePosition | undefined, destination: TreeDestinationPosition | undefined) => {
@@ -140,7 +93,7 @@ const SpaceShipSelector: React.FC = () => {
   return (
     <div className="SpaceShipSelector">
       <Tree
-        tree={treeWithTwoBranches}
+        tree={state.tree}
         renderItem={renderItem}
         onExpand={onExpand}
         onCollapse={onCollapse}
