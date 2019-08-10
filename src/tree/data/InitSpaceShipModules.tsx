@@ -1,76 +1,116 @@
 import {TreeData} from '@atlaskit/tree';
 
 export const initSpaceShipModules: TreeData = {
-    rootId: '1',
+    rootId: 'root',
     items: {
-      '1': {
-        id: '1',
-        children: ['1-1', '1-2'],
+      'root': {
+        id: 'root',
+        children: ['ship modules'],
         hasChildren: true,
         isExpanded: true,
         isChildrenLoading: false,
         data: {
-          title: 'root',
-        },
+          title: 'spaceship',
+          isDragable: false
+        }
       },
-      '1-1': {
-        id: '1-1',
-        children: ['1-1-1', '1-1-2'],
+      'ship modules': {
+        id: 'ship modules',
+        children: ['weapons', 'engines'],
         hasChildren: true,
         isExpanded: true,
         isChildrenLoading: false,
         data: {
-          title: 'First parent',
-        },
+          title: 'ship modules',
+          isDragable: false
+        }
       },
-      '1-2': {
-        id: '1-2',
-        children: ['1-2-1', '1-2-2'],
+      'weapons': {
+        id: 'weapons',
+        children: ['energy', 'bombs'],
         hasChildren: true,
         isExpanded: true,
         isChildrenLoading: false,
         data: {
-          title: 'Second parent',
+          title: 'weapons',
+          isDragable: false
+        }
+      },
+      'energy': {
+        id: 'energy',
+        children: ['spreadgun', 'lasergun'],
+        hasChildren: false,
+        isExpanded: true,
+        isChildrenLoading: false,
+        data: {
+          title: 'energy',
+          isDragable: true
         },
       },
-      '1-1-1': {
-        id: '1-1-1',
+      'spreadgun': {
+        id: 'spreadgun',
         children: [],
         hasChildren: false,
         isExpanded: false,
         isChildrenLoading: false,
         data: {
-          title: 'Child one',
-        },
+          title: 'spreadgun',
+          isDragable: true
+        }
       },
-      '1-1-2': {
-        id: '1-1-2',
+      'lasergun': {
+        id: 'lasergun',
         children: [],
         hasChildren: false,
         isExpanded: false,
         isChildrenLoading: false,
         data: {
-          title: 'Child two',
-        },
+          title: 'lasergun',
+          isDragable: true
+        }
       },
-      '1-2-1': {
-        id: '1-2-1',
+      'bombs': {
+        id: 'bombs',
         children: [],
         hasChildren: false,
         isExpanded: false,
         isChildrenLoading: false,
         data: {
-          title: 'Child three',
+          title: 'bombs',
+          isDragable: true
+        }
+      },
+      'engines': {
+        id: 'engines',
+        children: ['thrusters', 'warp engine'],
+        hasChildren: true,
+        isExpanded: true,
+        isChildrenLoading: false,
+        data: {
+          title: 'engines',
+          isDragable: false
         },
       },
-      '1-2-2': {
-        id: '1-2-2',
+      'thrusters': {
+        id: 'thrusters',
         children: [],
         hasChildren: false,
         isExpanded: false,
         isChildrenLoading: false,
         data: {
-          title: 'Child four',
+          title: 'thrusters',
+          isDragable: true
+        },
+      },
+      'warp engine': {
+        id: 'warp engine',
+        children: [],
+        hasChildren: false,
+        isExpanded: false,
+        isChildrenLoading: false,
+        data: {
+          title: 'warp engine',
+          isDragable: true
         },
       },
     },

@@ -4,3 +4,15 @@
   justify-content: center;
   cursor: pointer;
 }
+
+.SpaceShipSelector Button {
+  margin-left: 5px;
+  margin-bottom: 5px;
+}
+
+.SpaceShipSelector .Item {
+  width: 300px;
+  height: 25px;
+  text-align: left;
+  padding-top: 5px;
+}
