@@ -11,8 +11,7 @@ export enum ActionType {
     Collapse = 'collapse',
     Expand = 'expand',
     Drag = 'drag',
-    Add = 'add',
-    Remove = 'remove'
+    Add = 'add'
 }
 
 export interface ReducerState {
@@ -38,15 +37,6 @@ const addToTree = (tree: TreeData, itemId: ItemId) => {
         }
     }
 };
-
-const removeFromTree = (tree: TreeData, item: ItemId) => {
-    /*
-    tree.items[item] = undefined; //TODO: remove object from object
-    tree.items.foreach(item => { //TODO remove children attribute
-        if (item.children.contains()...)
-    })
-    */
-}
 
 export const reducer: React.Reducer<ReducerState, ReducerAction> = (state, action) => {
     switch (action.type) {

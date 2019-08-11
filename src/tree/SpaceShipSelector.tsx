@@ -5,9 +5,6 @@ import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
 import ChevronRightIcon from '@atlaskit/icon/glyph/chevron-right';
 import Button from '@atlaskit/button';
 import Form from 'react-bootstrap/Form';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Container from 'react-bootstrap/Container';
 import Tree, {
   RenderItemParams,
   TreeItem,
@@ -59,9 +56,7 @@ const SpaceShipSelector: React.FC = () => {
   };
 
   const onDragEnd = (source: TreeSourcePosition, destination: TreeDestinationPosition | undefined) => {
-    if (!destination) {
-      //TODO: delete
-    } else {
+    if (destination) {
       const curItem: ItemId = state.tree.items[source.parentId].children[source.index];
       const dragAllowed: boolean = state.tree.items[curItem].data.isDragable;
       if (dragAllowed) {
@@ -84,7 +79,6 @@ const SpaceShipSelector: React.FC = () => {
   };
 
   //TODO: dragging item groups into group
-  //TODO: define name for new item with textbox
   return (
     <div className="SpaceShipSelector">
       <div className="FormContainer">
