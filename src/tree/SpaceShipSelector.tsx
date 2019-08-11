@@ -1,4 +1,3 @@
-///<reference path="./SpaceShipSelectorTypes.d.ts"/>
 import * as React from 'react';
 import './SpaceShipSelector.css';
 import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
