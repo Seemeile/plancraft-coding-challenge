@@ -4,7 +4,10 @@ import './SpaceShipSelector.css';
 import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
 import ChevronRightIcon from '@atlaskit/icon/glyph/chevron-right';
 import Button from '@atlaskit/button';
-import Container from '@atlaskit/navigation';
+import Form from 'react-bootstrap/Form';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
 import Tree, {
   RenderItemParams,
   TreeItem,
@@ -17,6 +20,7 @@ import {ActionType, reducer} from './SpaceShipSelectorReducer';
 
 const SpaceShipSelector: React.FC = () => {
   const [state, dispatch] = React.useReducer(reducer, {tree: initSpaceShipModules});
+  const [newItemTitle, newItemTitleChanged] = React.useState();
 
   const getIcon = (item: TreeItem, onExpand: (itemId: ItemId) => void, onCollapse: (itemId: ItemId) => void) => {
     if (item.children && item.children.length > 0) {
@@ -33,10 +37,18 @@ const SpaceShipSelector: React.FC = () => {
     return <div className="PreTextIcon">&bull;</div>;
   };
 
-  const addItem = () => {
-    const underItem: ItemId = 'engines';
-    dispatch({type: ActionType.Add, payload: underItem})
+  const onNewItemTitleChanged = (e: any) => {
+    newItemTitleChanged(e.target.value);
   }
+
+  const addItem = () => {
+    const newItem: ItemId = newItemTitle;
+    if (state.tree.items[newItem]) {
+      alert(`tree already contains item "${newItem}"`);
+    } else {
+      dispatch({type: ActionType.Add, payload: newItem});
+    }
+  };
 
   const onExpand = (itemId: ItemId) => {
     dispatch({type: ActionType.Expand, payload: itemId});
@@ -48,7 +60,7 @@ const SpaceShipSelector: React.FC = () => {
 
   const onDragEnd = (source: TreeSourcePosition, destination: TreeDestinationPosition | undefined) => {
     if (!destination) {
-      //alert('no destination');
+      //TODO: delete
     } else {
       const curItem: ItemId = state.tree.items[source.parentId].children[source.index];
       const dragAllowed: boolean = state.tree.items[curItem].data.isDragable;
@@ -71,11 +83,20 @@ const SpaceShipSelector: React.FC = () => {
     );
   };
 
+  //TODO: dragging item groups into group
+  //TODO: define name for new item with textbox
   return (
     <div className="SpaceShipSelector">
-      <Button spacing="compact" appearance="primary" onClick={addItem}>
-          create item
-      </Button>
+      <div className="FormContainer">
+        <div className="newItemTitle">
+          <Form.Control type="text" placeholder="" onChange={onNewItemTitleChanged}/>
+        </div>
+        <div className="createItemButton">
+          <Button spacing="compact" appearance="primary" onClick={addItem}>
+            create item
+          </Button>
+        </div>
+      </div>
       <Tree
         tree={state.tree}
         renderItem={renderItem}

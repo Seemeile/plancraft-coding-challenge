@@ -11,7 +11,8 @@ export enum ActionType {
     Collapse = 'collapse',
     Expand = 'expand',
     Drag = 'drag',
-    Add = 'add'
+    Add = 'add',
+    Remove = 'remove'
 }
 
 export interface ReducerState {
@@ -27,15 +28,25 @@ export interface ReducerAction {
     };
 }
 
-const addToTree = (state: ReducerState) => {
-    state.tree.items.newItem = {
-        id: 'newItem',
+const addToTree = (tree: TreeData, itemId: ItemId) => {
+    tree.items[itemId] = {
+        id: itemId,
         children: [],
         data: {
-            title: 'newItem',
+            title: itemId,
+            isDragable: true
         }
     }
 };
+
+const removeFromTree = (tree: TreeData, item: ItemId) => {
+    /*
+    tree.items[item] = undefined; //TODO: remove object from object
+    tree.items.foreach(item => { //TODO remove children attribute
+        if (item.children.contains()...)
+    })
+    */
+}
 
 export const reducer: React.Reducer<ReducerState, ReducerAction> = (state, action) => {
     switch (action.type) {
@@ -46,10 +57,11 @@ export const reducer: React.Reducer<ReducerState, ReducerAction> = (state, actio
         case ActionType.Drag:
             return {tree: moveItemOnTree(state.tree, action.payload.src, action.payload.dst)};
         case ActionType.Add:
-            addToTree(state);
-            const underItem: ItemId = action.payload;
-            return {tree: mutateTree(state.tree, action.payload, { 
-                children: [...state.tree.items[underItem].children, 'newItem'] 
+            const underItem: ItemId = state.tree.items[
+                Object.keys(state.tree.items)[Object.keys(state.tree.items).length - 1]].id;
+            addToTree(state.tree, action.payload);
+            return {tree: mutateTree(state.tree, underItem, { 
+                children: [...state.tree.items[underItem].children, action.payload] 
             })};
         default:
         throw new Error();
