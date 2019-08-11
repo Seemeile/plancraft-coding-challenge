@@ -78,28 +78,29 @@ const SpaceShipSelector: React.FC = () => {
     );
   };
 
-  //TODO: dragging item groups into group
   return (
     <div className="SpaceShipSelector">
       <div className="FormContainer">
-        <div className="newItemTitle">
+        <div className="NewItemTitle">
           <Form.Control type="text" placeholder="" onChange={onNewItemTitleChanged}/>
         </div>
-        <div className="createItemButton">
+        <div className="CreateItemButton">
           <Button spacing="compact" appearance="primary" onClick={addItem}>
             create item
           </Button>
         </div>
       </div>
-      <Tree
-        tree={state.tree}
-        renderItem={renderItem}
-        onExpand={onExpand}
-        onCollapse={onCollapse}
-        onDragEnd={onDragEnd}
-        isDragEnabled={true}
-        isNestingEnabled={true}
-      />
+      <div className="TreeContainer">
+        <Tree
+          tree={state.tree}
+          renderItem={renderItem}
+          onExpand={onExpand}
+          onCollapse={onCollapse}
+          onDragEnd={onDragEnd}
+          isDragEnabled
+          isNestingEnabled
+        />
+      </div>
     </div>
   );
 }
